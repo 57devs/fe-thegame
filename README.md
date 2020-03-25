@@ -1,3 +1,6 @@
+# fe-thegame
+front-end repository of the game
+
 ## Available Scripts
 In the project directory, you can run:
 
