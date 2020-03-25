@@ -1,0 +1,40 @@
+{
+    "questions": [
+        {
+            "question": "Asagidakilerden hangisi?",
+            "options": [
+                {
+                    "A": "Bu",
+                    "B": "Yok bu",
+                    "C": "Bence bu",
+                    "D": "No, u"
+                }
+            ],
+            "answer": "B"
+        },
+        {
+            "question": "Asagidakilerden hangisi degildir?",
+            "options": [
+                {
+                    "A": "Bu degil",
+                    "B": "Ustteki",
+                    "C": "Bence de ustteki",
+                    "D": "Kesin"
+                }
+            ],
+            "answer": "C"
+        },
+        {
+            "question": "Asagidakilerden?",
+            "options": [
+                {
+                    "A": "1",
+                    "B": "1 ve 2",
+                    "C": "Hepsi",
+                    "D": "Hicbiri"
+                }
+            ],
+            "answer": "D"
+        }
+    ]
+}
