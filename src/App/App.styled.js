@@ -4,12 +4,18 @@ const Container = styled.div`
     display: flex;
     flex: 1;
     flex-direction: column;
+    align-items: center;
     align-self: stretch;
 
     margin: 0;
     padding: 0;
 
     background-color: #000;
+
+    h1 {
+        color: #fff;
+        cursor: pointer;
+    }
 `;
 
 const Content = styled.div`
