@@ -8,7 +8,7 @@
                 "Bence bu",
                 "No, u"
             ],
-            "answer": "B"
+            "answer": "0"
         },
         {
             "question": "Asagidakilerden hangisi degildir?",
@@ -18,7 +18,7 @@
                 "Bence de ustteki",
                 "Kesin"
             ],
-            "answer": "C"
+            "answer": "2"
         },
         {
             "question": "Asagidakilerden?",
@@ -28,7 +28,7 @@
                 "Hepsi",
                 "Hicbiri"
             ],
-            "answer": "D"
+            "answer": "3"
         }
     ]
 }
