@@ -4,6 +4,7 @@ import GameSettings from "./GameSettings/GameSettings"
 import Lobby from "./Lobby/Lobby"
 import Question from "./Question/Question"
 import QuestionBoard from "./QuestionBoard/QuestionBoard"
+import Scoreboard from "./Scoreboard/Scoreboard"
 
 export {
     Home,
@@ -11,5 +12,6 @@ export {
     GameSettings,
     Lobby,
     Question,
-    QuestionBoard
+    QuestionBoard,
+    Scoreboard
 }
