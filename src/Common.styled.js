@@ -14,6 +14,36 @@ const Button = styled.button`
     outline: 0;
 `
 
+const Form = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+const FormRow = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+    justify-content: ${props => props.childAlignment || "space-between"};
+`
+
+let FormLabel = styled.label`
+    font-size: 24px;
+    color: #fff;
+`
+
+let FormInput = styled.input`
+    font-size: 24px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    padding: 10px 10px;
+    outline: 0;
+`
+
+
 export {
-    Button
+    Button,
+    Form,
+    FormInput,
+    FormLabel,
+    FormRow
 }

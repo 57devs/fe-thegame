@@ -14,7 +14,9 @@ export default class Home extends Component {
                 <Link to="/create">
                     <Button backgroundColor="purple">Yeni Oyun</Button>
                 </Link>
-                <Button backgroundColor="tomato">Katıl</Button>
+                <Link to="/join">
+                    <Button backgroundColor="tomato">Katıl</Button>
+                </Link>
             </Container>
         )
     }

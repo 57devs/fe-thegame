@@ -1,7 +1,7 @@
 import React from "react"
 import { BrowserRouter as Router, Route } from "react-router-dom"
 
-import { Game, GameSettings, Home, Scoreboard } from "../components"
+import { Game, GameSettings, Home, Join, Scoreboard } from "../components"
 
 import { Container } from "./App.styled"
 
@@ -12,6 +12,7 @@ const App = () => {
         <h1>BORU</h1>
         <Route path="/" exact component={Home} />
         <Route path="/create" exact component={GameSettings} />
+        <Route path="/join" exact component={Join} />
         <Route path="/game" exact component={Game} />
         <Route path="/game/result" exact component={Scoreboard} />
       </Container>

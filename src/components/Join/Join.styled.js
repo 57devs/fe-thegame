@@ -3,18 +3,13 @@ import { Button, Form, FormInput, FormLabel, FormRow } from "../../Common.styled
 
 const Container = styled.div`
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
 
-
-    margin: 0;
-    padding: 0;
+    color: #fff;
 `
 
 export {
-    Button,
-    Container,
-    FormLabel,
-    FormInput,
-    Form as SettingsForm,
-    FormRow as SettingsFormRow
+    Container, Button, Form, FormInput, FormLabel, FormRow
 }
