@@ -28,11 +28,11 @@ export default class GameSettings extends Component {
                     </FormRow>
                     <FormRow>
                         <Label>Oyun Adı:</Label>
-                        <Input name="title" onChange={this.setSettingValues} placeholder="oyunum" />
+                        <Input autocomplete="off" name="title" onChange={this.setSettingValues} placeholder="oyunum" />
                     </FormRow>
                     <FormRow>
                         <Label>Soru Sayısı:</Label>
-                        <Input name="questionLength" onChange={this.setSettingValues} type="number" placeholder="10" />
+                        <Input autocomplete="off" name="questionLength" onChange={this.setSettingValues} type="number" placeholder="10" />
                     </FormRow>
                     <FormRow childAlignment="flex-end">
                         <Button

@@ -48,7 +48,7 @@ export default class Join extends Component {
                             <React.Fragment>
                                 <FormRow>
                                     <FormLabel>Oyun ID'si:</FormLabel>
-                                    <FormInput name="gameID" onChange={this.onInputChange} value={gameID || ""} placeholder="#123456" />
+                                    <FormInput autocomplete="off" name="gameID" onChange={this.onInputChange} value={gameID || ""} placeholder="#123456" />
                                 </FormRow>
                                 <FormRow>
                                     <Button onClick={this.submitGameID} style={nextButtonStyles}>Ileri</Button>

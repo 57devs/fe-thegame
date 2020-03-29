@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { Link } from "react-router-dom"
 
 import { Button, Buttons, Container, Title, User, Users } from "./Lobby.styled"
 
@@ -28,11 +29,13 @@ export default class Lobby extends Component {
                     <User>Fatma</User>
                 </Users>
                 <Buttons>
-                    <Button
-                        width="200px"
-                        fontSize="24px"
-                        backgroundColor="red"
-                    >Ayrıl</Button>
+                    <Link to="/">
+                        <Button
+                            width="200px"
+                            fontSize="24px"
+                            backgroundColor="red"
+                        >Ayrıl</Button>
+                    </Link>
                     {
                         isOwner ?
                             <Button
