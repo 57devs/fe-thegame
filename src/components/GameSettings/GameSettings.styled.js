@@ -10,9 +10,22 @@ const Container = styled.div`
     padding: 0;
 `
 
+const DropdownWrapper = styled.div`
+    display: flex;
+
+    & > div {
+        width: 275px;
+    }
+
+    * {
+        font-size: 24px;
+    }
+`
+
 export {
     Button,
     Container,
+    DropdownWrapper,
     FormLabel,
     FormInput,
     Form as SettingsForm,
