@@ -4,10 +4,6 @@ import { Link } from "react-router-dom"
 import { Button, Container } from "./Home.styled"
 
 export default class Home extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         return (
             <Container>

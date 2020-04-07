@@ -12,14 +12,6 @@ const difficultyOptions = [
     { value: "5", label: "Boru" }
 ]
 
-const customStyles = {
-    control: () => ({
-        // none of react-select's styles are passed to <Control />
-        width: 200,
-    })
-}
-
-
 export default class GameSettings extends Component {
     constructor(props) {
         super(props)
@@ -27,14 +19,14 @@ export default class GameSettings extends Component {
         this.state = {
             username: null,
             title: null,
-            questionLength: null,
+            questionLength: 10,
             successful: false,
-            difficulty: null
+            difficulty: 1
         }
     }
 
     render() {
-        let { successful, difficulty } = this.state
+        let { successful } = this.state
 
         if (successful) return <Redirect to="/game" />
         return (
@@ -50,7 +42,7 @@ export default class GameSettings extends Component {
                     </FormRow>
                     <FormRow>
                         <Label>Soru Sayısı:</Label>
-                        <Input autocomplete="off" name="questionLength" onChange={this.setSettingValues} type="number" placeholder="10" />
+                        <Input autocomplete="off" name="questionLength" onChange={this.setSettingValues} type="number" value="10" />
                     </FormRow>
                     <FormRow>
                         <Label>Zorluk:</Label>
@@ -59,6 +51,7 @@ export default class GameSettings extends Component {
                                 onChange={this.changeDifficulty}
                                 options={difficultyOptions}
                                 placeholder="Zorluk seç"
+                                value={difficultyOptions[0]}
                             />
                         </DropdownWrapper>
                     </FormRow>
@@ -98,8 +91,24 @@ export default class GameSettings extends Component {
             return
         }
 
-        this.setState({
-            successful: true
+        fetch("http://localhost:8000/create-game/", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "game_name": title,
+                "username": username,
+                "num_of_questions": questionLength
+            })
+        }).then(result => {
+            console.log(result)
+            this.setState({
+                successful: true
+            })
+        }).catch(error => {
+            console.error(error)
         })
     }
 

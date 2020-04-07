@@ -3,10 +3,6 @@ import React, { Component } from "react"
 import { Container, List, ListItem } from "./Scoreboard.styled"
 
 export default class Scoreboard extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         return (
             <Container>
