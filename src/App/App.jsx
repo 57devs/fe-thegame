@@ -13,7 +13,7 @@ const App = () => {
         <Route path="/" exact component={Home} />
         <Route path="/create" exact component={GameSettings} />
         <Route path="/join" exact component={Join} />
-        <Route path="/game" exact component={Game} />
+        <Route path="/game" component={Game} />
         <Route path="/game/result" exact component={Scoreboard} />
       </Container>
     </Router>

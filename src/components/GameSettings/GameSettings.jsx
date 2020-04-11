@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { Redirect } from "react-router-dom"
 import Select from "react-select"
+import { request } from "../../request"
 
 import { Button, Container, DropdownWrapper, FormInput as Input, FormLabel as Label, SettingsForm as Form, SettingsFormRow as FormRow } from "./GameSettings.styled"
 
@@ -21,14 +22,17 @@ export default class GameSettings extends Component {
             title: null,
             questionLength: 10,
             successful: false,
-            difficulty: 1
+            difficulty: 1,
+            questions: null,
+            gameId: null
         }
     }
 
     render() {
-        let { successful } = this.state
+        let { gameId } = this.state
 
-        if (successful) return <Redirect to="/game" />
+        if (gameId) return <Redirect to={`game/${gameId}`} />
+
         return (
             <Container>
                 <Form>
@@ -91,25 +95,16 @@ export default class GameSettings extends Component {
             return
         }
 
-        fetch("http://localhost:8000/create-game/", {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                "game_name": title,
-                "username": username,
-                "num_of_questions": questionLength
-            })
-        }).then(result => {
-            console.log(result)
-            this.setState({
-                successful: true
-            })
-        }).catch(error => {
-            console.error(error)
-        })
+        let gameInfo = {
+            "game_name": title,
+            "username": username,
+            "num_of_questions": questionLength,
+            "difficulty": difficulty
+        }
+
+        request("POST", "create-game", gameInfo, gameData => {
+            console.log(gameData);
+        });
     }
 
     setSettingValues = (e) => {
@@ -123,7 +118,7 @@ export default class GameSettings extends Component {
 
     changeDifficulty = (difficulty) => {
         this.setState(
-            { difficulty }
+            { difficulty: difficulty.value }
         )
     }
 }
