@@ -3,7 +3,15 @@ import { Redirect } from "react-router-dom"
 import Select from "react-select"
 import { request } from "../../request"
 
-import { Button, Container, DropdownWrapper, FormInput as Input, FormLabel as Label, SettingsForm as Form, SettingsFormRow as FormRow } from "./GameSettings.styled"
+import {
+    Button,
+    Container,
+    DropdownWrapper,
+    FormInput as Input,
+    FormLabel as Label,
+    SettingsForm as Form,
+    SettingsFormRow as FormRow
+} from "./GameSettings.styled"
 
 const difficultyOptions = [
     { value: "1", label: "Çocuk Oyuncağı" },
@@ -21,9 +29,7 @@ export default class GameSettings extends Component {
             username: null,
             title: null,
             questionLength: 10,
-            successful: false,
             difficulty: 1,
-            questions: null,
             gameId: null
         }
     }
@@ -103,8 +109,10 @@ export default class GameSettings extends Component {
         }
 
         request("POST", "create-game", gameInfo, gameData => {
-            console.log(gameData);
-        });
+            localStorage.setItem("username", username)
+
+            this.setState({ gameId: gameData.game_id })
+        })
     }
 
     setSettingValues = (e) => {

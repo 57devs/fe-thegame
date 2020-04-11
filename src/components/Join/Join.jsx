@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { Redirect } from "react-router-dom"
+import { request } from "../../request"
 
 import { Button, Container, Form, FormInput, FormLabel, FormRow } from "./Join.styled"
 
@@ -10,13 +11,13 @@ export default class Join extends Component {
         this.state = {
             isGameIDValid: false,
             isUsernameValid: false,
-            gameID: null,
+            gameId: null,
             username: null
         }
     }
 
     render() {
-        let { gameID, isGameIDValid, isUsernameValid, username } = this.state
+        let { gameId, isGameIDValid, isUsernameValid, username } = this.state
 
         let nextButtonStyles = {
             width: "100%",
@@ -30,7 +31,7 @@ export default class Join extends Component {
             backgroundColor: "#28a745",
         }
 
-        if (isUsernameValid) return <Redirect to="/game" />
+        if (isUsernameValid) return <Redirect to={`/game/${gameId}`} />
         return (
             <Container>
                 <Form>
@@ -48,7 +49,7 @@ export default class Join extends Component {
                             <React.Fragment>
                                 <FormRow>
                                     <FormLabel>Oyun ID'si:</FormLabel>
-                                    <FormInput autocomplete="off" name="gameID" onChange={this.onInputChange} value={gameID || ""} placeholder="#123456" />
+                                    <FormInput autocomplete="off" name="gameId" onChange={this.onInputChange} value={gameId || ""} placeholder="#123456" />
                                 </FormRow>
                                 <FormRow>
                                     <Button onClick={this.submitGameID} style={nextButtonStyles}>Ileri</Button>
@@ -73,8 +74,12 @@ export default class Join extends Component {
     }
 
     submitUsername = () => {
-        this.setState({
-            isUsernameValid: true
+        // POST /join-game/<game_id>
+        request("POST", `join-game/${this.state.gameId}`, { username: this.state.username }, result => {
+            console.log(result)
         })
+        // this.setState({
+        //     isUsernameValid: true
+        // })
     }
 }
