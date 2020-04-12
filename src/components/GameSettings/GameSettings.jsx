@@ -29,14 +29,13 @@ export default class GameSettings extends Component {
             username: null,
             title: null,
             questionLength: 10,
-            difficulty: 1,
+            difficulty: difficultyOptions[0],
             gameId: null
         }
     }
 
     render() {
-        let { gameId } = this.state
-
+        let { gameId, difficulty } = this.state
         if (gameId) return <Redirect to={`game/${gameId}`} />
 
         return (
@@ -61,7 +60,7 @@ export default class GameSettings extends Component {
                                 onChange={this.changeDifficulty}
                                 options={difficultyOptions}
                                 placeholder="Zorluk seç"
-                                value={difficultyOptions[0]}
+                                value={difficulty}
                             />
                         </DropdownWrapper>
                     </FormRow>
@@ -105,7 +104,7 @@ export default class GameSettings extends Component {
             "game_name": title,
             "username": username,
             "num_of_questions": questionLength,
-            "difficulty": difficulty
+            "difficulty": difficulty.value
         }
 
         request("POST", "create-game", gameInfo, gameData => {
@@ -126,7 +125,7 @@ export default class GameSettings extends Component {
 
     changeDifficulty = (difficulty) => {
         this.setState(
-            { difficulty: difficulty.value }
+            { difficulty }
         )
     }
 }
