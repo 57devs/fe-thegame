@@ -74,12 +74,10 @@ export default class Join extends Component {
     }
 
     submitUsername = () => {
-        // POST /join-game/<game_id>
-        request("POST", `join-game/${this.state.gameId}`, { username: this.state.username }, result => {
-            console.log(result)
+        request("POST", `join/${this.state.gameId}`, { username: this.state.username }, result => {
+            this.setState({
+                isUsernameValid: true
+            })
         })
-        // this.setState({
-        //     isUsernameValid: true
-        // })
     }
 }

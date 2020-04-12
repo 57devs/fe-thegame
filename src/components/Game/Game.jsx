@@ -20,7 +20,12 @@ export default class Game extends Component {
 
 
     componentDidMount() {
+        this.ws.onopen = () => {
+            console.log('connected')
+        }
+
         this.ws.onmessage = evt => {
+            console.log('new message is received', evt)
             const message = JSON.parse(evt.data)
 
             this.setState({
@@ -30,18 +35,37 @@ export default class Game extends Component {
                 createdBy: message.created_by
             })
         }
+
+        this.ws.onclose = () => {
+            console.log('disconnected')
+        }
+
+        this.ws.onerror = err => {
+            console.error(
+                "Socket encountered error: ",
+                err.message,
+                "Closing socket"
+            );
+
+            this.ws.close();
+        };
     }
 
     render() {
         let { createdBy, gameName, gameStarted, questions, players, username } = this.state
 
         if (gameStarted) return <QuestionBoard questions={questions} />
-        return <Lobby gameInfo={{
-            createdBy: createdBy,
-            gameName: gameName,
-            players: players,
-            username: username,
-        }} startGame={this.startGame} />
+        return (
+            <Lobby
+                gameInfo={{
+                    createdBy: createdBy,
+                    gameName: gameName,
+                    players: players,
+                    username: username,
+                }}
+                startGame={this.startGame}
+            />
+        )
     }
 
     startGame = gameStarted => {
