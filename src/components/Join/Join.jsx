@@ -75,6 +75,7 @@ export default class Join extends Component {
 
     submitUsername = () => {
         request("POST", `join/${this.state.gameId}`, { username: this.state.username }, result => {
+            localStorage.setItem("username", this.state.username)
             this.setState({
                 isUsernameValid: true
             })
