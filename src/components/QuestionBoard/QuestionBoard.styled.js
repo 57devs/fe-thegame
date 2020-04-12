@@ -23,7 +23,7 @@ const Timer = styled.span`
 
     color: #fff;
     background-color: ${props => props.backgroundColor || "green"};
-    width: ${props => `${props.width}%` || "100%"};
+    width: 100%;
 
     border: 1px solid #fff;
     border-radius: 5px;

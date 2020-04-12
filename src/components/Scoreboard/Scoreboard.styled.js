@@ -30,7 +30,10 @@ const ListItem = styled.div`
         color: #0a0;
     }
 
-    &:nth-of-type(2),
+    &:nth-of-type(2) {
+        color: yellow;
+    }
+
     &:nth-of-type(3) {
         color: tomato;
     }

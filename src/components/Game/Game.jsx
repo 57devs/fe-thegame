@@ -7,11 +7,12 @@ export default class Game extends Component {
         super(props)
 
         this.state = {
+            createdBy: null,
+            currentQuestion: 0,
+            gameName: null,
             gameStarted: false,
             questions: null,
             players: null,
-            gameName: null,
-            createdBy: null,
             started: null,
             username: localStorage.getItem("username")
         }
@@ -22,22 +23,21 @@ export default class Game extends Component {
     componentDidMount() {
         this.ws.onmessage = evt => {
             const message = JSON.parse(evt.data)
-            console.log(message)
 
             this.setState({
                 questions: message.questions,
                 players: message.players,
                 gameName: message.game_name,
                 createdBy: message.created_by,
-                started: message.started
+                started: message.started,
             })
         }
     }
 
     render() {
-        let { createdBy, gameName, questions, players, started, username } = this.state
+        let { createdBy, currentQuestion, gameName, questions, players, started, username } = this.state
 
-        if (started) return <QuestionBoard questions={questions} />
+        if (started) return <QuestionBoard gameId={this.props.match.params.id} question={questions[currentQuestion]} nextQuestion={this.nextQuestion} />
         return (
             <Lobby
                 gameInfo={{
@@ -54,5 +54,11 @@ export default class Game extends Component {
 
     startGame = () => {
         this.ws.send("started")
+    }
+
+    nextQuestion = () => {
+        this.setState({
+            currentQuestion: this.state.currentQuestion + 1
+        })
     }
 }

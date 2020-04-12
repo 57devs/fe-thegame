@@ -9,17 +9,32 @@ import {
 } from "./Question.styled"
 
 export default class Question extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            question: this.props.question
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            question: nextProps.question
+        })
+    }
+
     render() {
+        let { title, choices } = this.state.question
+
         return (
             <Container>
                 <QuestionWrapper>
-                    <QuestionText>Asagidakilerden hangisidir?</QuestionText>
+                    <QuestionText>{title}</QuestionText>
                 </QuestionWrapper>
                 <Answers>
-                    <Answer>A) Yalnız I</Answer>
-                    <Answer>B) I ve II</Answer>
-                    <Answer>C) Hepsi</Answer>
-                    <Answer>D) Hiçbiri</Answer>
+                    {
+                        choices.map((choice, i) => <Answer key={i}>{choice}</Answer>)
+                    }
                 </Answers>
             </Container>
         )

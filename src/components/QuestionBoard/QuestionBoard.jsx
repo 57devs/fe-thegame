@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { Redirect } from "react-router-dom"
 
 import { Question } from "../"
 
@@ -9,21 +10,10 @@ export default class QuestionBoard extends Component {
         super(props)
 
         this.state = {
-            question: {
-                "question": "Asagidakilerden hangisi?",
-                "options": [
-                    {
-                        "A": "Bu",
-                        "B": "Yok bu",
-                        "C": "Bence bu",
-                        "D": "No, u"
-                    }
-                ],
-                "answer": "B"
-            },
-            questionNumber: 0,
+            question: this.props.question,
             maxTime: 15,
             remainingTime: 0,
+            gameEnded: false
         }
     }
 
@@ -35,13 +25,33 @@ export default class QuestionBoard extends Component {
         })
     }
 
-    render() {
-        let { remainingTime, maxTime } = this.state
+    componentWillReceiveProps(nextProps) {
+        if (!nextProps.question) {
+            this.setState({
+                gameEnded: true
+            })
 
+            return
+        }
+
+        if (this.state.question.title !== nextProps.question.title) {
+            this.setState({
+                question: nextProps.question,
+                remainingTime: this.state.maxTime
+            }, () => {
+                this.chronometer()
+            })
+        }
+    }
+
+    render() {
+        let { gameEnded, remainingTime, maxTime, question } = this.state
+
+        if (gameEnded) return <Redirect to={`/game/${this.props.gameId}/result`} />
         return (
             <Container>
                 <Timer duration={maxTime}>{remainingTime}</Timer>
-                <Question />
+                <Question question={question} />
             </Container>
         )
     }
@@ -53,6 +63,7 @@ export default class QuestionBoard extends Component {
                     remainingTime: this.state.remainingTime - 1,
                 })
             } else {
+                this.props.nextQuestion()
                 clearInterval(timeInterval)
             }
         }, 1000)
