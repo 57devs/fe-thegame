@@ -12,49 +12,32 @@ export default class Game extends Component {
             players: null,
             gameName: null,
             createdBy: null,
+            started: null,
             username: localStorage.getItem("username")
         }
 
         this.ws = new WebSocket(`ws://localhost:8000/ws/${this.props.match.params.id}`)
     }
 
-
     componentDidMount() {
-        this.ws.onopen = () => {
-            console.log('connected')
-        }
-
         this.ws.onmessage = evt => {
-            console.log('new message is received', evt)
             const message = JSON.parse(evt.data)
+            console.log(message)
 
             this.setState({
                 questions: message.questions,
                 players: message.players,
                 gameName: message.game_name,
-                createdBy: message.created_by
+                createdBy: message.created_by,
+                started: message.started
             })
         }
-
-        this.ws.onclose = () => {
-            console.log('disconnected')
-        }
-
-        this.ws.onerror = err => {
-            console.error(
-                "Socket encountered error: ",
-                err.message,
-                "Closing socket"
-            );
-
-            this.ws.close();
-        };
     }
 
     render() {
-        let { createdBy, gameName, gameStarted, questions, players, username } = this.state
+        let { createdBy, gameName, questions, players, started, username } = this.state
 
-        if (gameStarted) return <QuestionBoard questions={questions} />
+        if (started) return <QuestionBoard questions={questions} />
         return (
             <Lobby
                 gameInfo={{
@@ -62,13 +45,14 @@ export default class Game extends Component {
                     gameName: gameName,
                     players: players,
                     username: username,
+                    gameId: this.props.match.params.id
                 }}
                 startGame={this.startGame}
             />
         )
     }
 
-    startGame = gameStarted => {
-        this.setState({ gameStarted })
+    startGame = () => {
+        this.ws.send("started")
     }
 }

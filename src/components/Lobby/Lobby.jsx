@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
+import { request } from "../../request"
 
 import { Button, Buttons, Container, Title, User, Users } from "./Lobby.styled"
 
@@ -43,6 +44,12 @@ export default class Lobby extends Component {
     }
 
     startGame = e => {
-        this.props.startGame(true)
+        // endpoint /start-game/<game_id> GET
+        // request("GET", `start-game/${this.props.gameInfo.gameId}`, null, response => {
+        //     console.log(response)
+        //     // this.props.startGame(true)
+        // })
+
+        this.props.startGame()
     }
 }
