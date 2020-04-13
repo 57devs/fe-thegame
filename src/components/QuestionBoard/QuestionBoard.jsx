@@ -1,9 +1,9 @@
 import React, { Component } from "react"
 import { Redirect } from "react-router-dom"
 
-import { Question } from "../"
+import { Question, Timer } from "../"
 
-import { QuestionBoard as Container, Timer } from "./QuestionBoard.styled"
+import { QuestionBoard as Container } from "./QuestionBoard.styled"
 
 export default class QuestionBoard extends Component {
     constructor(props) {
@@ -50,7 +50,11 @@ export default class QuestionBoard extends Component {
         if (gameEnded) return <Redirect to={`/game/${this.props.gameId}/result`} />
         return (
             <Container>
-                <Timer duration={maxTime}>{remainingTime}</Timer>
+                {
+                    remainingTime > 0 ?
+                        <Timer remainingTime={remainingTime} maxTime={maxTime} /> :
+                        <div style={{ height: "18px", margin: "0 0 10px 0" }} />
+                }
                 <Question question={question} />
             </Container>
         )

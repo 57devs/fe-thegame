@@ -6,6 +6,7 @@ import Lobby from "./Lobby/Lobby"
 import Question from "./Question/Question"
 import QuestionBoard from "./QuestionBoard/QuestionBoard"
 import Scoreboard from "./Scoreboard/Scoreboard"
+import Timer from "./Timer/Timer"
 
 export {
     Home,
@@ -15,5 +16,6 @@ export {
     Lobby,
     Question,
     QuestionBoard,
-    Scoreboard
+    Scoreboard,
+    Timer
 }
