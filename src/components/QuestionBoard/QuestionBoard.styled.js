@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { theme } from "../../theme.styled"
 
 const QuestionBoard = styled.div`
     display: flex;
@@ -17,6 +18,17 @@ const QuestionBoard = styled.div`
     box-sizing: border-box;
 `
 
+const QuestionResult = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: ${props => props.correctAnswer ? theme.colors.success : theme.colors.error};
+    color: #fff;
+    font-size: 24px;
+`
+
 export {
-    QuestionBoard
+    QuestionBoard,
+    QuestionResult
 }

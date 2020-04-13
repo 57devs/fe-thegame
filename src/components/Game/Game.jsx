@@ -37,7 +37,7 @@ export default class Game extends Component {
     render() {
         let { createdBy, currentQuestion, gameName, questions, players, started, username } = this.state
 
-        if (started) return <QuestionBoard gameId={this.props.match.params.id} question={questions[currentQuestion]} nextQuestion={this.nextQuestion} />
+        if (started) return <QuestionBoard gameId={this.props.match.params.id} question={questions[currentQuestion]} nextQuestion={this.nextQuestion} questionIndex={currentQuestion} />
         return (
             <Lobby
                 gameInfo={{

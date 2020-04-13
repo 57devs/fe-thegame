@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom"
 
 import { Question, Timer } from "../"
 
-import { QuestionBoard as Container } from "./QuestionBoard.styled"
+import { QuestionBoard as Container, QuestionResult } from "./QuestionBoard.styled"
 
 export default class QuestionBoard extends Component {
     constructor(props) {
@@ -11,9 +11,12 @@ export default class QuestionBoard extends Component {
 
         this.state = {
             question: this.props.question,
+            questionIndex: this.props.questionIndex,
             maxTime: 15,
             remainingTime: 0,
-            gameEnded: false
+            gameEnded: false,
+            isAnswerCorrect: false,
+            answers: []
         }
     }
 
@@ -37,7 +40,8 @@ export default class QuestionBoard extends Component {
         if (this.state.question.title !== nextProps.question.title) {
             this.setState({
                 question: nextProps.question,
-                remainingTime: this.state.maxTime
+                remainingTime: this.state.maxTime,
+                questionIndex: nextProps.questionIndex
             }, () => {
                 this.chronometer()
             })
@@ -55,7 +59,7 @@ export default class QuestionBoard extends Component {
                         <Timer remainingTime={remainingTime} maxTime={maxTime} /> :
                         <div style={{ height: "18px", margin: "0 0 10px 0" }} />
                 }
-                <Question question={question} />
+                <Question setChoice={this.setChoice} question={question} />
             </Container>
         )
     }
@@ -71,5 +75,18 @@ export default class QuestionBoard extends Component {
                 clearInterval(timeInterval)
             }
         }, 1000)
+    }
+
+    setChoice = selectedAnswer => {
+        let newAnswers = this.state.answers.concat({
+            question: this.state.questionIndex,
+            choice: selectedAnswer,
+            correct: this.state.question.correct_choice === selectedAnswer
+        })
+
+        this.setState({
+            answers: newAnswers,
+            isAnswerCorrect: this.state.question.correct_choice === selectedAnswer
+        }, console.log(this.state))
     }
 }

@@ -33,10 +33,16 @@ export default class Question extends Component {
                 </QuestionWrapper>
                 <Answers>
                     {
-                        choices.map((choice, i) => <Answer key={i}>{choice}</Answer>)
+                        choices.map((choice, i) => <Answer onClick={this.setChoice} name={i} key={i}> {choice} </Answer>)
                     }
                 </Answers>
             </Container>
         )
+    }
+
+    setChoice = e => {
+        let selectedAnswer = Number(e.currentTarget.attributes.name.value)
+
+        this.props.setChoice(selectedAnswer)
     }
 }
