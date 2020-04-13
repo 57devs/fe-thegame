@@ -19,10 +19,6 @@ export default class Timer extends Component {
         })
     }
 
-    componentWillUnmount() {
-
-    }
-
     render() {
         let { maxTime, remainingTime } = this.state
 
