@@ -13,7 +13,8 @@ export default class Question extends Component {
         super(props)
 
         this.state = {
-            question: this.props.question
+            question: this.props.question,
+            isChoiceSelected: false
         }
     }
 
@@ -24,7 +25,8 @@ export default class Question extends Component {
     }
 
     render() {
-        let { title, choices } = this.state.question
+        let { choices, title } = this.state.question
+        let { isChoiceSelected } = this.state
 
         return (
             <Container>
@@ -33,7 +35,7 @@ export default class Question extends Component {
                 </QuestionWrapper>
                 <Answers>
                     {
-                        choices.map((choice, i) => <Answer onClick={this.setChoice} name={i} key={i}> {choice} </Answer>)
+                        choices.map((choice, i) => <Answer className={isChoiceSelected ? "selected" : ""} onClick={this.setChoice} name={i} key={i}> {choice} </Answer>)
                     }
                 </Answers>
             </Container>
@@ -41,8 +43,11 @@ export default class Question extends Component {
     }
 
     setChoice = e => {
-        let selectedAnswer = Number(e.currentTarget.attributes.name.value)
+        this.setState({
+            isChoiceSelected: true
+        })
 
+        let selectedAnswer = Number(e.currentTarget.attributes.name.value)
         this.props.setChoice(selectedAnswer)
     }
 }

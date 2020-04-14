@@ -16,7 +16,9 @@ export default class QuestionBoard extends Component {
             remainingTime: 0,
             gameEnded: false,
             isAnswerCorrect: false,
-            answers: []
+            isQuestionAnswered: false,
+            answers: [],
+            showResult: false
         }
     }
 
@@ -49,44 +51,65 @@ export default class QuestionBoard extends Component {
     }
 
     render() {
-        let { gameEnded, remainingTime, maxTime, question } = this.state
+        let { gameEnded, isAnswerCorrect, remainingTime, maxTime, question, showResult } = this.state
 
         if (gameEnded) return <Redirect to={`/game/${this.props.gameId}/result`} />
         return (
             <Container>
                 {
-                    remainingTime > 0 ?
-                        <Timer remainingTime={remainingTime} maxTime={maxTime} /> :
-                        <div style={{ height: "18px", margin: "0 0 10px 0" }} />
+                    showResult ?
+                        <QuestionResult isAnswerCorrect={isAnswerCorrect}>{isAnswerCorrect ? "Doğru" : "Yanlış"}</QuestionResult> :
+                        <React.Fragment>
+                            <Timer remainingTime={remainingTime} maxTime={maxTime} />
+                            <Question setChoice={this.setChoice} question={question} />
+                        </React.Fragment>
                 }
-                <Question setChoice={this.setChoice} question={question} />
             </Container>
         )
     }
 
     chronometer() {
+
         let timeInterval = setInterval(() => {
-            if (this.state.remainingTime > 0) {
+            let { remainingTime } = this.state
+            if (remainingTime > 0) {
                 this.setState({
-                    remainingTime: this.state.remainingTime - 1,
+                    remainingTime: remainingTime - 1,
                 })
             } else {
-                this.props.nextQuestion()
-                clearInterval(timeInterval)
+                this.setState({
+                    showResult: true
+                }, () => {
+                    setTimeout(() => {
+                        this.props.nextQuestion()
+                        this.setState({
+                            isQuestionAnswered: false,
+                            showResult: false
+                        })
+
+                    }, 3000)
+
+                    clearInterval(timeInterval)
+                })
             }
         }, 1000)
     }
 
     setChoice = selectedAnswer => {
-        let newAnswers = this.state.answers.concat({
-            question: this.state.questionIndex,
+        let { answers, isQuestionAnswered, question, questionIndex } = this.state
+
+        if (isQuestionAnswered) return
+
+        let newAnswers = answers.concat({
+            question: questionIndex,
             choice: selectedAnswer,
-            correct: this.state.question.correct_choice === selectedAnswer
+            correct: question.correct_choice === selectedAnswer
         })
 
         this.setState({
             answers: newAnswers,
-            isAnswerCorrect: this.state.question.correct_choice === selectedAnswer
-        }, console.log(this.state))
+            isAnswerCorrect: question.correct_choice === selectedAnswer,
+            isQuestionAnswered: true
+        })
     }
 }

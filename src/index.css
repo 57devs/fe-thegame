@@ -31,3 +31,7 @@ code {
   margin: 0;
   padding: 0;
 }
+
+.selected {
+  background-color: gray !important;
+}

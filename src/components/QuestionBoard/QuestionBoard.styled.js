@@ -22,10 +22,12 @@ const QuestionResult = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    align-self: stretch;
+    flex: 1;
 
-    background-color: ${props => props.correctAnswer ? theme.colors.success : theme.colors.error};
+    background-color: ${props => props.isAnswerCorrect ? theme.colors.success : theme.colors.error};
     color: #fff;
-    font-size: 24px;
+    font-size: 48px;
 `
 
 export {
