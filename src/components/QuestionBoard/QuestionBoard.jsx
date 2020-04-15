@@ -10,14 +10,14 @@ export default class QuestionBoard extends Component {
         super(props)
 
         this.state = {
-            question: this.props.question,
-            questionIndex: this.props.questionIndex,
-            maxTime: 15,
-            remainingTime: 0,
+            answers: [],
             gameEnded: false,
             isAnswerCorrect: false,
             isQuestionAnswered: false,
-            answers: [],
+            maxTime: 15,
+            question: this.props.question,
+            questionIndex: this.props.questionIndex,
+            remainingTime: 0,
             showResult: false
         }
     }
@@ -36,6 +36,7 @@ export default class QuestionBoard extends Component {
                 gameEnded: true
             })
 
+            this.calculateScore()
             return
         }
 
@@ -51,7 +52,7 @@ export default class QuestionBoard extends Component {
     }
 
     render() {
-        let { gameEnded, isAnswerCorrect, remainingTime, maxTime, question, showResult } = this.state
+        let { gameEnded, isAnswerCorrect, maxTime, question, remainingTime, showResult } = this.state
 
         if (gameEnded) return <Redirect to={`/game/${this.props.gameId}/result`} />
         return (
@@ -69,7 +70,6 @@ export default class QuestionBoard extends Component {
     }
 
     chronometer() {
-
         let timeInterval = setInterval(() => {
             let { remainingTime } = this.state
             if (remainingTime > 0) {
@@ -96,14 +96,14 @@ export default class QuestionBoard extends Component {
     }
 
     setChoice = selectedAnswer => {
-        let { answers, isQuestionAnswered, question, questionIndex } = this.state
-
+        let { answers, isQuestionAnswered, question, questionIndex, remainingTime, maxTime } = this.state
         if (isQuestionAnswered) return
 
         let newAnswers = answers.concat({
-            question: questionIndex,
             choice: selectedAnswer,
-            correct: question.correct_choice === selectedAnswer
+            correct: question.correct_choice === selectedAnswer,
+            question: questionIndex,
+            spentTime: maxTime - remainingTime
         })
 
         this.setState({
@@ -111,5 +111,34 @@ export default class QuestionBoard extends Component {
             isAnswerCorrect: question.correct_choice === selectedAnswer,
             isQuestionAnswered: true
         })
+    }
+
+    calculateScore = () => {
+        let { answers, maxTime, questionIndex } = this.state
+
+        const MAX_SCORE = 1000,
+            CORRECT_ANSWER_COEFFICENT = 0.6,
+            TIME_COEFFICENT = 0.4,
+
+        const MAX_SCORE_CORRECT_ANSWER_RATIO = MAX_SCORE * CORRECT_ANSWER_COEFFICENT,
+            MAX_SCORE_SPENT_TIME_RATIO = MAX_SCORE * TIME_COEFFICENT
+
+        let questionLength = questionIndex + 1
+        let totalTime = maxTime * questionLength
+
+        let pointsPerCorrectAnswer = Math.floor(MAX_SCORE_CORRECT_ANSWER_RATIO / questionLength)
+        let pointLossPerSeconds = Number((MAX_SCORE_SPENT_TIME_RATIO / totalTime).toFixed(1))
+
+        let totalSpentTime = answers.reduce((a, b) => ({ spentTime: a.spentTime + b.spentTime }))
+        totalSpentTime = totalSpentTime.spentTime
+
+        let totalCorrectAnswer = answers.filter(answer => answer.correct).length
+
+        let earnedPointsByCorrectAnswers = totalCorrectAnswer * pointsPerCorrectAnswer
+        let earnedPointsBySpentTime = MAX_SCORE_SPENT_TIME_RATIO - (totalSpentTime * pointLossPerSeconds)
+
+        let score = earnedPointsByCorrectAnswers + earnedPointsBySpentTime
+
+        return score
     }
 }
