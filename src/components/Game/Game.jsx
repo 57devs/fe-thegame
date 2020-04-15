@@ -25,10 +25,10 @@ export default class Game extends Component {
             const message = JSON.parse(evt.data)
 
             this.setState({
+                createdBy: message.created_by,
+                gameName: message.game_name,
                 questions: message.questions,
                 players: message.players,
-                gameName: message.game_name,
-                createdBy: message.created_by,
                 started: message.started,
             })
         }
@@ -37,15 +37,23 @@ export default class Game extends Component {
     render() {
         let { createdBy, currentQuestion, gameName, questions, players, started, username } = this.state
 
-        if (started) return <QuestionBoard gameId={this.props.match.params.id} question={questions[currentQuestion]} nextQuestion={this.nextQuestion} questionIndex={currentQuestion} />
-        return (
+        if (started) {
+            return (
+                <QuestionBoard
+                    gameId={this.props.match.params.id}
+                    nextQuestion={this.nextQuestion}
+                    question={questions[currentQuestion]}
+                    questionIndex={currentQuestion}
+                />
+            )
+        } else return (
             <Lobby
                 gameInfo={{
                     createdBy: createdBy,
+                    gameId: this.props.match.params.id,
                     gameName: gameName,
                     players: players,
-                    username: username,
-                    gameId: this.props.match.params.id
+                    username: username
                 }}
                 startGame={this.startGame}
             />

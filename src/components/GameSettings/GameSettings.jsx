@@ -13,7 +13,7 @@ import {
     SettingsFormRow as FormRow
 } from "./GameSettings.styled"
 
-const difficultyOptions = [
+const DIFFICULTY_OPTIONS = [
     { value: "1", label: "Çocuk Oyuncağı" },
     { value: "2", label: "Kolay" },
     { value: "3", label: "Orta" },
@@ -26,39 +26,55 @@ export default class GameSettings extends Component {
         super(props)
 
         this.state = {
-            username: null,
-            title: null,
+            difficulty: DIFFICULTY_OPTIONS[0],
+            gameId: null,
             questionLength: 10,
-            difficulty: difficultyOptions[0],
-            gameId: null
+            title: null,
+            username: null
         }
     }
 
     render() {
-        let { gameId, difficulty } = this.state
-        if (gameId) return <Redirect to={`game/${gameId}`} />
+        let { difficulty, gameId, questionLength } = this.state
 
-        return (
+        if (gameId) {
+            return <Redirect to={`game/${gameId}`} />
+        } else return (
             <Container>
                 <Form>
                     <FormRow>
                         <Label>Takma ad:</Label>
-                        <Input name="username" onChange={this.setSettingValues} placeholder="oyuncu" />
+                        <Input
+                            name="username"
+                            onChange={this.setSettingValues}
+                            placeholder="oyuncu"
+                        />
                     </FormRow>
                     <FormRow>
                         <Label>Oyun Adı:</Label>
-                        <Input autocomplete="off" name="title" onChange={this.setSettingValues} placeholder="oyunum" />
+                        <Input
+                            autocomplete="off"
+                            name="title"
+                            onChange={this.setSettingValues}
+                            placeholder="oyunum"
+                        />
                     </FormRow>
                     <FormRow>
                         <Label>Soru Sayısı:</Label>
-                        <Input autocomplete="off" name="questionLength" onChange={this.setSettingValues} type="number" value="10" />
+                        <Input
+                            autocomplete="off"
+                            name="questionLength"
+                            onChange={this.setSettingValues}
+                            type="number"
+                            value={questionLength}
+                        />
                     </FormRow>
                     <FormRow>
                         <Label>Zorluk:</Label>
                         <DropdownWrapper>
                             <Select
                                 onChange={this.changeDifficulty}
-                                options={difficultyOptions}
+                                options={DIFFICULTY_OPTIONS}
                                 placeholder="Zorluk seç"
                                 value={difficulty}
                             />
@@ -78,7 +94,7 @@ export default class GameSettings extends Component {
     }
 
     onSubmit = () => {
-        let { difficulty, username, title, questionLength } = this.state
+        let { difficulty, questionLength, title, username } = this.state
 
         if (!username) {
             alert("Kullanıcı adı boş bırakılamaz.")
@@ -101,10 +117,10 @@ export default class GameSettings extends Component {
         }
 
         let gameInfo = {
+            "difficulty": difficulty.value,
             "game_name": title,
-            "username": username,
             "num_of_questions": questionLength,
-            "difficulty": difficulty.value
+            "username": username
         }
 
         request("POST", "create-game", gameInfo, gameData => {

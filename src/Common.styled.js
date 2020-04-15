@@ -26,19 +26,18 @@ const FormRow = styled.div`
     justify-content: ${props => props.childAlignment || "space-between"};
 `
 
-let FormLabel = styled.label`
+const FormLabel = styled.label`
     font-size: 24px;
     color: #fff;
 `
 
-let FormInput = styled.input`
+const FormInput = styled.input`
     font-size: 24px;
     border-radius: 5px;
     border: 1px solid transparent;
     padding: 10px 10px;
     outline: 0;
 `
-
 
 export {
     Button,

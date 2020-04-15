@@ -5,7 +5,7 @@ import { Button, Buttons, Container, Title, User, Users } from "./Lobby.styled"
 
 export default class Lobby extends Component {
     render() {
-        let { players, gameName, createdBy, username } = this.props.gameInfo
+        let { createdBy, gameName, players, username } = this.props.gameInfo
         let isOwner = createdBy === username ? true : false
 
         return (

@@ -9,9 +9,9 @@ export default class Join extends Component {
         super(props)
 
         this.state = {
+            gameId: null,
             isGameIDValid: false,
             isUsernameValid: false,
-            gameId: null,
             username: null
         }
     }
@@ -31,8 +31,9 @@ export default class Join extends Component {
             backgroundColor: "#28a745",
         }
 
-        if (isUsernameValid) return <Redirect to={`/game/${gameId}`} />
-        return (
+        if (isUsernameValid) {
+            return <Redirect to={`/game/${gameId}`} />
+        } else return (
             <Container>
                 <Form>
                     {
@@ -40,7 +41,12 @@ export default class Join extends Component {
                             <React.Fragment>
                                 <FormRow>
                                     <FormLabel>Takma ad:</FormLabel>
-                                    <FormInput name="username" onChange={this.onInputChange} value={username || ""} placeholder="Bilgiç" />
+                                    <FormInput
+                                        name="username"
+                                        onChange={this.onInputChange}
+                                        placeholder="Bilgiç"
+                                        value={username || ""}
+                                    />
                                 </FormRow>
                                 <FormRow>
                                     <Button onClick={this.submitUsername} style={joinButtonStyles}>Katıl</Button>
@@ -49,7 +55,13 @@ export default class Join extends Component {
                             <React.Fragment>
                                 <FormRow>
                                     <FormLabel>Oyun ID'si:</FormLabel>
-                                    <FormInput autocomplete="off" name="gameId" onChange={this.onInputChange} value={gameId || ""} placeholder="#123456" />
+                                    <FormInput
+                                        autocomplete="off"
+                                        name="gameId"
+                                        onChange={this.onInputChange}
+                                        placeholder="#123456"
+                                        value={gameId || ""}
+                                    />
                                 </FormRow>
                                 <FormRow>
                                     <Button onClick={this.submitGameID} style={nextButtonStyles}>Ileri</Button>
