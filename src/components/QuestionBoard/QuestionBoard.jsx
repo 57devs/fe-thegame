@@ -118,7 +118,7 @@ export default class QuestionBoard extends Component {
 
         const MAX_SCORE = 1000,
             CORRECT_ANSWER_COEFFICENT = 0.6,
-            TIME_COEFFICENT = 0.4,
+            TIME_COEFFICENT = 0.4
 
         const MAX_SCORE_CORRECT_ANSWER_RATIO = MAX_SCORE * CORRECT_ANSWER_COEFFICENT,
             MAX_SCORE_SPENT_TIME_RATIO = MAX_SCORE * TIME_COEFFICENT
