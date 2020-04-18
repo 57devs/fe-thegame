@@ -10,6 +10,11 @@ const Container = styled.div`
         margin: 0 auto;
         padding: 0;
     }
+
+    span {
+        font-size: 11px;
+        margin: 5px 0 10px auto;
+    }
 `
 
 const List = styled.div`
