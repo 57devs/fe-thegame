@@ -1,18 +1,41 @@
 import React, { Component } from "react"
+import { request } from "../../request"
 
 import { Container, List, ListItem } from "./Scoreboard.styled"
 
 export default class Scoreboard extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            gameResult: {}
+        }
+    }
+
+    componentDidMount() {
+        request("GET", `games/${this.props.match.params.id}/scoreboard`, null, gameResult => {
+            this.setState({ gameResult })
+        })
+    }
+
     render() {
+        let { created_by, game_name, player_scores } = this.state.gameResult
+
         return (
             <Container>
-                <h3>Scoreboard</h3>
+                <h3>Scoreboard of the game #{game_name}</h3>
+                <span>created by {created_by}</span>
                 <List>
-                    <ListItem>#1 M. Jordan 300 Points</ListItem>
-                    <ListItem>#2 L. James 299 Points</ListItem>
-                    <ListItem>#3 K. Bryant 299 Points</ListItem>
-                    <ListItem>#4 K. Durant 250 Points</ListItem>
-                    <ListItem>#5 J. McGee 15 Points</ListItem>
+                    {
+                        player_scores ?
+                            player_scores.map((score, i) => {
+                                let username = Object.keys(score)[0]
+                                let point = score[username]
+
+                                return <ListItem key={i}>{i + 1}. {username} {point}</ListItem>
+                            }) :
+                            <React.Fragment />
+                    }
                 </List>
             </Container>
         )
