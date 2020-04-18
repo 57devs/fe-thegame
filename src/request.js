@@ -1,4 +1,4 @@
-const API = "http://localhost:8000/"
+const API = "http://192.168.0.17:8000/"
 
 export const request = function (method, path, data, callback) {
     if (!method || !path) return

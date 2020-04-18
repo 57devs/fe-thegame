@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom"
 import { Question, Timer } from "../"
 
 import { QuestionBoard as Container, QuestionResult } from "./QuestionBoard.styled"
+import { request } from "../../request"
 
 export default class QuestionBoard extends Component {
     constructor(props) {
@@ -18,6 +19,10 @@ export default class QuestionBoard extends Component {
             question: this.props.question,
             questionIndex: this.props.questionIndex,
             remainingTime: 0,
+            scoreData: {
+                total_score: 0,
+                actions: []
+            },
             showResult: false
         }
     }
@@ -36,7 +41,13 @@ export default class QuestionBoard extends Component {
                 gameEnded: true
             })
 
-            this.calculateScore()
+            let totalScore = this.calculateTotalScore()
+            let username = localStorage.getItem("username")
+            let { scoreData } = this.state
+            scoreData.total_score = totalScore
+
+            request("POST", `games/${this.props.gameId}/players/${username}/score`, scoreData)
+
             return
         }
 
@@ -69,7 +80,7 @@ export default class QuestionBoard extends Component {
         )
     }
 
-    chronometer() {
+    chronometer = () => {
         let timeInterval = setInterval(() => {
             let { remainingTime } = this.state
             if (remainingTime > 0) {
@@ -96,7 +107,7 @@ export default class QuestionBoard extends Component {
     }
 
     setChoice = selectedAnswer => {
-        let { answers, isQuestionAnswered, question, questionIndex, remainingTime, maxTime } = this.state
+        let { answers, isQuestionAnswered, maxTime, question, questionIndex, remainingTime, scoreData } = this.state
         if (isQuestionAnswered) return
 
         let newAnswers = answers.concat({
@@ -106,14 +117,24 @@ export default class QuestionBoard extends Component {
             spentTime: maxTime - remainingTime
         })
 
+        let updatedActions = scoreData.actions.concat({
+            q_id: question.q_id,
+            response_time: maxTime - remainingTime,
+            is_correct: question.correct_choice === selectedAnswer,
+            score: null
+        })
+
+        scoreData.actions = updatedActions
+
         this.setState({
             answers: newAnswers,
             isAnswerCorrect: question.correct_choice === selectedAnswer,
-            isQuestionAnswered: true
+            isQuestionAnswered: true,
+            scoreData: scoreData
         })
     }
 
-    calculateScore = () => {
+    calculateTotalScore = callback => {
         let { answers, maxTime, questionIndex } = this.state
 
         const MAX_SCORE = 1000,
@@ -139,6 +160,7 @@ export default class QuestionBoard extends Component {
 
         let score = earnedPointsByCorrectAnswers + earnedPointsBySpentTime
 
-        return score
+        if (callback && typeof callback === "function") callback(score)
+        else return score
     }
 }

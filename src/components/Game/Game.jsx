@@ -17,7 +17,7 @@ export default class Game extends Component {
             username: localStorage.getItem("username")
         }
 
-        this.ws = new WebSocket(`ws://localhost:8000/ws/${this.props.match.params.id}`)
+        this.ws = new WebSocket(`ws://192.168.0.17:8000/ws/${this.props.match.params.id}`)
     }
 
     componentDidMount() {
