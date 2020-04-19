@@ -24,6 +24,13 @@ const Timer = styled.span`
         from {width: 100%;}
         to {width: 2%;}
     }
+
+    @media (min-width: 320px) and (max-width: 480px) {
+        border-radius: 2.5px;
+        margin: 0 0 5px 0;
+        padding: 0 2.5px 0 0;
+        font-size: 12px;
+    }
 `
 
 export {

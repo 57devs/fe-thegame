@@ -1,51 +1,51 @@
 import styled from "styled-components"
 
 const Container = styled.div`
-display: flex;
-flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-color: #fff;
+    color: #fff;
 
-h3 {
-    margin: 0 auto;
-    padding: 0;
-}
+    h3 {
+        margin: 0 auto;
+        padding: 0;
+    }
 
-span {
-    font-size: 11px;
-    margin: 5px 0 10px auto;
-}
+    span {
+        font-size: 11px;
+        margin: 5px 0 10px auto;
+    }
 `
 
 const List = styled.div`
-display: flex;
-flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-margin: 0;
-padding: 0;
+    margin: 0;
+    padding: 0;
 `
 
 const ListItem = styled.div`
-display: flex;
-align-items: center;
+    display: flex;
+    align-items: center;
 
-padding: 5px;
+    padding: 5px;
+    
+    &:first-of-type {
+        color: #0a0;
+    }
 
-&:first-of-type {
-    color: #0a0;
-}
+    &:nth-of-type(2) {
+        color: yellow;
+    }
 
-&:nth-of-type(2) {
-    color: yellow;
-}
+    &:nth-of-type(3) {
+        color: tomato;
+    }
 
-&:nth-of-type(3) {
-    color: tomato;
-}
-
-&:last-of-type {
-    color: red;
-}
+    &:last-of-type {
+        color: red;
+    }
 `
 
 const Loading = styled.div`
@@ -76,6 +76,13 @@ const Spinner = styled.div`
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
+    }
+
+    @media (min-width: 320px) and (max-width: 480px) {
+        border: 4px solid #ababab;
+        border-top: 4px solid #fff;
+        width: 30px;
+        height: 30px;
     }
 `
 

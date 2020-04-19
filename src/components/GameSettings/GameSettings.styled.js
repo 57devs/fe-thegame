@@ -14,11 +14,20 @@ const DropdownWrapper = styled.div`
     display: flex;
 
     & > div {
-        width: 275px;
+        width: 200px;
+        box-sizing: border-box;
+
+        @media (min-width: 320px) and (max-width: 480px) {
+            width: 150px;
+        }
     }
 
     * {
         font-size: 24px;
+
+        @media (min-width: 320px) and (max-width: 480px) {
+            font-size: 12px;
+        }
     }
 `
 

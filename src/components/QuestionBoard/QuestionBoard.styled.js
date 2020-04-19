@@ -16,6 +16,12 @@ const QuestionBoard = styled.div`
     border: 1px solid #acacac;
     border-radius: 5px;
     box-sizing: border-box;
+
+    @media (min-width: 320px) and (max-width: 480px) {
+        height: 70%;
+        padding: 5px;
+        border-radius: 2.5px;
+    }
 `
 
 const QuestionResult = styled.div`
@@ -28,6 +34,10 @@ const QuestionResult = styled.div`
     background-color: ${props => props.isAnswerCorrect ? theme.colors.success : theme.colors.error};
     color: #fff;
     font-size: 48px;
+
+    @media (min-width: 320px) and (max-width: 480px) {
+        font-size: 24px;
+    }
 `
 
 export {

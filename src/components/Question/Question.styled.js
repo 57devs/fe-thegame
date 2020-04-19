@@ -17,18 +17,32 @@ const QuestionTextWrapper = styled.div`
     border: 1px solid #cecece;
     border-radius: 5px;
     padding: 0 10px;
+
+    @media (min-width: 320px) and (max-width: 480px) {
+        border-radius: 2.5px;
+        padding: 0 5px;
+    }
 `
 
 const QuestionText = styled.p`
     font-size: 22px;
     color: #fff;
     cursor: default;
+
+    @media (min-width: 320px) and (max-width: 480px) {
+        font-size: 12px;
+    }
 `
 
 const AnswersWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     flex: 1;
+
+    @media (min-width: 320px) and (max-width: 480px) {
+        flex-direction: column;
+        flex-wrap: nowrap;
+    }
 `
 
 const Answer = styled.div`
@@ -69,6 +83,32 @@ const Answer = styled.div`
 
     &:nth-of-type(3) {
         background-color: #531251;
+    }
+
+    @media (min-width: 320px) and (max-width: 480px) {
+        margin: 5px 0;
+        padding: 5px;
+        flex: 1;
+        border-radius: 2.5px;
+        font-size: 12px;
+        align-self: stretch;
+
+        &:last-of-type {
+            background-color: #12532a;
+            margin-bottom: 0;
+        }
+
+        &:nth-of-type(1) {
+            background-color: #b00b69;
+        }
+        
+        &:nth-of-type(2) {
+            background-color: #d1c122;
+        }
+
+        &:nth-of-type(3) {
+            background-color: #531251;
+        }
     }
 `
 
