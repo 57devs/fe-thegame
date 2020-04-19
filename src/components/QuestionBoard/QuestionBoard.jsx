@@ -41,14 +41,12 @@ export default class QuestionBoard extends Component {
             let { scoreData } = this.state
             scoreData.total_score = scoreData.actions.reduce((a, b) => ({ score: a.score + b.score })).score
 
+            request("POST", `games/${this.props.gameId}/players/${username}/score`, scoreData)
+
             this.setState({
                 gameEnded: true
             })
-            request("POST", `games/${this.props.gameId}/players/${username}/score`, scoreData)
-            return
-        }
-
-        if (this.state.question.title !== nextProps.question.title) {
+        } else if (nextProps.question && this.state.question.title !== nextProps.question.title) {
             this.setState({
                 question: nextProps.question,
                 remainingTime: this.state.maxTime,
