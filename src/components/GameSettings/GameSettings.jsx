@@ -14,11 +14,15 @@ import {
 } from "./GameSettings.styled"
 
 const DIFFICULTY_OPTIONS = [
-    { value: "1", label: "Çocuk Oyuncağı" },
-    { value: "2", label: "Kolay" },
+    { value: "1", label: "Kolay" },
     { value: "3", label: "Orta" },
-    { value: "4", label: "Zor" },
-    { value: "5", label: "Boru" }
+    { value: "5", label: "Zor" },
+]
+
+const QUESTION_LENGTH = [
+    { value: "1", label: "10" },
+    { value: "2", label: "20" },
+    { value: "3", label: "30" }
 ]
 
 export default class GameSettings extends Component {
@@ -28,7 +32,7 @@ export default class GameSettings extends Component {
         this.state = {
             difficulty: DIFFICULTY_OPTIONS[0],
             gameId: null,
-            questionLength: 10,
+            questionLength: QUESTION_LENGTH[0],
             title: null,
             username: null
         }
@@ -61,13 +65,14 @@ export default class GameSettings extends Component {
                     </FormRow>
                     <FormRow>
                         <Label>Soru Sayısı:</Label>
-                        <Input
-                            autocomplete="off"
-                            name="questionLength"
-                            onChange={this.setSettingValues}
-                            type="number"
-                            value={questionLength}
-                        />
+                        <DropdownWrapper>
+                            <Select
+                                onChange={this.setQuestionLength}
+                                options={QUESTION_LENGTH}
+                                placeholder="Soru sayısı"
+                                value={questionLength}
+                            />
+                        </DropdownWrapper>
                     </FormRow>
                     <FormRow>
                         <Label>Zorluk:</Label>
@@ -119,7 +124,7 @@ export default class GameSettings extends Component {
         let gameInfo = {
             "difficulty": difficulty.value,
             "game_name": title,
-            "num_of_questions": questionLength,
+            "num_of_questions": questionLength.label,
             "username": username
         }
 
@@ -142,6 +147,13 @@ export default class GameSettings extends Component {
     changeDifficulty = (difficulty) => {
         this.setState(
             { difficulty }
+        )
+    }
+
+    setQuestionLength = (questionLength) => {
+        console.log(questionLength)
+        this.setState(
+            { questionLength }
         )
     }
 }
