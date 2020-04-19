@@ -37,16 +37,16 @@ export default class QuestionBoard extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (!nextProps.question) {
-            this.setState({
-                gameEnded: true
-            })
-
             let totalScore = this.calculateTotalScore()
             let username = localStorage.getItem("username")
             let { scoreData } = this.state
-            scoreData.total_score = totalScore
+            scoreData.total_score = totalScore.toFixed(1)
 
-            request("POST", `games/${this.props.gameId}/players/${username}/score`, scoreData)
+            request("POST", `games/${this.props.gameId}/players/${username}/score`, scoreData, () => {
+                this.setState({
+                    gameEnded: true
+                })
+            })
 
             return
         }

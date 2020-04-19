@@ -8,23 +8,27 @@ export default class Scoreboard extends Component {
         super(props)
 
         this.state = {
-            gameResult: {}
+            gameResult: null
         }
     }
 
     componentDidMount() {
-        request("GET", `games/${this.props.match.params.id}/scoreboard`, null, gameResult => {
-            this.setState({ gameResult })
-        })
+        setTimeout(() => {
+            request("GET", `games/${this.props.match.params.id}/scoreboard`, null, gameResult => {
+                this.setState({ gameResult })
+            })
+        }, 2000);
     }
 
     render() {
-        let { created_by, game_name, player_scores } = this.state.gameResult
+        let { gameResult } = this.state
+        if (!gameResult) return <div>Sonuclar hesaplaniyor...</div>
 
+        let { game_name, created_by, player_scores } = gameResult
         return (
             <Container>
-                <h3>Scoreboard of the game #{game_name}</h3>
-                <span>created by {created_by}</span>
+                <h3>{game_name} sonucu</h3>
+                <span>oyun kurucusu {created_by}</span>
                 <List>
                     {
                         player_scores ?
