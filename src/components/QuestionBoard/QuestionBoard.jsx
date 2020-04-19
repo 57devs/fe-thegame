@@ -37,17 +37,14 @@ export default class QuestionBoard extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (!nextProps.question) {
-            let totalScore = this.calculateTotalScore()
             let username = localStorage.getItem("username")
             let { scoreData } = this.state
-            scoreData.total_score = totalScore.toFixed(1)
+            scoreData.total_score = scoreData.actions.reduce((a, b) => ({ score: a.score + b.score })).score
 
-            request("POST", `games/${this.props.gameId}/players/${username}/score`, scoreData, () => {
-                this.setState({
-                    gameEnded: true
-                })
+            this.setState({
+                gameEnded: true
             })
-
+            request("POST", `games/${this.props.gameId}/players/${username}/score`, scoreData)
             return
         }
 
@@ -63,7 +60,7 @@ export default class QuestionBoard extends Component {
     }
 
     render() {
-        let { gameEnded, isAnswerCorrect, maxTime, question, remainingTime, showResult } = this.state
+        let { gameEnded, isAnswerCorrect, maxTime, question, questionIndex, remainingTime, showResult } = this.state
 
         if (gameEnded) return <Redirect to={`/game/${this.props.gameId}/result`} />
         return (
@@ -73,7 +70,7 @@ export default class QuestionBoard extends Component {
                         <QuestionResult isAnswerCorrect={isAnswerCorrect}>{isAnswerCorrect ? "Doğru" : "Yanlış"}</QuestionResult> :
                         <React.Fragment>
                             <Timer remainingTime={remainingTime} maxTime={maxTime} />
-                            <Question setChoice={this.setChoice} question={question} />
+                            <Question setChoice={this.setChoice} question={question} questionIndex={questionIndex} />
                         </React.Fragment>
                 }
             </Container>
@@ -121,9 +118,8 @@ export default class QuestionBoard extends Component {
             q_id: question.q_id,
             response_time: maxTime - remainingTime,
             is_correct: question.correct_choice === selectedAnswer,
-            score: null
+            score: this.calculateQuestionPoint(question.difficulty, question.correct_choice === selectedAnswer, questionIndex, remainingTime)
         })
-
         scoreData.actions = updatedActions
 
         this.setState({
@@ -134,33 +130,8 @@ export default class QuestionBoard extends Component {
         })
     }
 
-    calculateTotalScore = callback => {
-        let { answers, maxTime, questionIndex } = this.state
-
-        const MAX_SCORE = 1000,
-            CORRECT_ANSWER_COEFFICENT = 0.6,
-            TIME_COEFFICENT = 0.4
-
-        const MAX_SCORE_CORRECT_ANSWER_RATIO = MAX_SCORE * CORRECT_ANSWER_COEFFICENT,
-            MAX_SCORE_SPENT_TIME_RATIO = MAX_SCORE * TIME_COEFFICENT
-
-        let questionLength = questionIndex + 1
-        let totalTime = maxTime * questionLength
-
-        let pointsPerCorrectAnswer = Math.floor(MAX_SCORE_CORRECT_ANSWER_RATIO / questionLength)
-        let pointLossPerSeconds = Number((MAX_SCORE_SPENT_TIME_RATIO / totalTime).toFixed(1))
-
-        let totalSpentTime = answers.reduce((a, b) => ({ spentTime: a.spentTime + b.spentTime }))
-        totalSpentTime = totalSpentTime.spentTime
-
-        let totalCorrectAnswer = answers.filter(answer => answer.correct).length
-
-        let earnedPointsByCorrectAnswers = totalCorrectAnswer * pointsPerCorrectAnswer
-        let earnedPointsBySpentTime = MAX_SCORE_SPENT_TIME_RATIO - (totalSpentTime * pointLossPerSeconds)
-
-        let score = earnedPointsByCorrectAnswers + earnedPointsBySpentTime
-
-        if (callback && typeof callback === "function") callback(score)
-        else return score
+    calculateQuestionPoint = (difficulty, isCorrect, questionIndex, remainingTime) => {
+        if (!isCorrect) return 0
+        return Number((difficulty * questionIndex) + (remainingTime * questionIndex * 1.1).toFixed(1))
     }
 }

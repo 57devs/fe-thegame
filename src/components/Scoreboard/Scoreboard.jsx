@@ -27,14 +27,14 @@ export default class Scoreboard extends Component {
         let { game_name, created_by, player_scores } = gameResult
         return (
             <Container>
-                <h3>{game_name} sonucu</h3>
-                <span>oyun kurucusu {created_by}</span>
+                <h3>Oyun Adı: {game_name}</h3>
+                <span>Oyun Kurucusu: {created_by}</span>
                 <List>
                     {
                         player_scores ?
                             player_scores.map((score, i) => {
                                 let username = Object.keys(score)[0]
-                                let point = score[username]
+                                let point = score[username].toFixed(1)
 
                                 return <ListItem key={i}>{i + 1}. {username} {point}</ListItem>
                             }) :

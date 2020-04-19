@@ -14,7 +14,8 @@ export default class Question extends Component {
 
         this.state = {
             isChoiceSelected: false,
-            question: this.props.question
+            question: this.props.question,
+            questionIndex: this.props.questionIndex
         }
     }
 
@@ -26,12 +27,12 @@ export default class Question extends Component {
 
     render() {
         let { choices, title } = this.state.question
-        let { isChoiceSelected } = this.state
+        let { isChoiceSelected, questionIndex } = this.state
 
         return (
             <Container>
                 <QuestionWrapper>
-                    <QuestionText>{title}</QuestionText>
+                    <QuestionText>{questionIndex + 1}. {title}</QuestionText>
                 </QuestionWrapper>
                 <Answers>
                     {
