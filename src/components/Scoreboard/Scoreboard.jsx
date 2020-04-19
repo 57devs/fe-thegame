@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { request } from "../../request"
 
-import { Container, List, ListItem } from "./Scoreboard.styled"
+import { Container, List, ListItem, Loading, Spinner } from "./Scoreboard.styled"
 
 export default class Scoreboard extends Component {
     constructor(props) {
@@ -22,7 +22,7 @@ export default class Scoreboard extends Component {
 
     render() {
         let { gameResult } = this.state
-        if (!gameResult) return <div>Sonuclar hesaplaniyor...</div>
+        if (!gameResult) return <Loading><Spinner /></Loading>
 
         let { game_name, created_by, player_scores } = gameResult
         return (
@@ -36,7 +36,7 @@ export default class Scoreboard extends Component {
                                 let username = Object.keys(score)[0]
                                 let point = score[username].toFixed(1)
 
-                                return <ListItem key={i}>{i + 1}. {username} {point}</ListItem>
+                                return <ListItem key={i}>{i + 1}. {username} {point} puan</ListItem>
                             }) :
                             <React.Fragment />
                     }
