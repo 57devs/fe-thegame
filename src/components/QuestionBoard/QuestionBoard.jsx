@@ -130,6 +130,6 @@ export default class QuestionBoard extends Component {
 
     calculateQuestionPoint = (difficulty, isCorrect, questionIndex, remainingTime) => {
         if (!isCorrect) return 0
-        return Number((difficulty * questionIndex) + (remainingTime * questionIndex * 1.1).toFixed(1))
+        return (difficulty * (questionIndex + 1)) + Number((remainingTime * questionIndex * 1.1).toFixed(1))
     }
 }
