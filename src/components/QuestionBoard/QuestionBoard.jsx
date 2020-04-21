@@ -7,6 +7,7 @@ import { QuestionBoard as Container, QuestionResult } from "./QuestionBoard.styl
 import { request } from "../../request"
 
 export default class QuestionBoard extends Component {
+    _unmounted = false
     constructor(props) {
         super(props)
 
@@ -35,21 +36,27 @@ export default class QuestionBoard extends Component {
         })
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (!nextProps.question) {
-            let username = localStorage.getItem("username")
-            let { scoreData } = this.state
-            scoreData.total_score = scoreData.actions.reduce((a, b) => ({ score: a.score + b.score })).score
+    componentWillUnmount() {
+        this._unmounted = true
+        this.props.ws.close()
+    }
 
-            request("POST", `games/${this.props.gameId}/players/${username}/score`, scoreData)
+    componentWillReceiveProps(nextProps) {
+        let { maxTime, question, scoreData } = this.state
+
+        if (!nextProps.question) {
+            this.props.ws.close()
+            let username = localStorage.getItem("username")
+            scoreData.total_score = scoreData.actions.reduce((a, b) => ({ score: a.score + b.score })).score
 
             this.setState({
                 gameEnded: true
             })
-        } else if (nextProps.question && this.state.question.title !== nextProps.question.title) {
+            request("POST", `games/${this.props.gameId}/players/${username}/score`, scoreData)
+        } else if (nextProps.question && question.title !== nextProps.question.title) {
             this.setState({
                 question: nextProps.question,
-                remainingTime: this.state.maxTime,
+                remainingTime: maxTime,
                 questionIndex: nextProps.questionIndex
             }, () => {
                 this.chronometer()
@@ -88,11 +95,12 @@ export default class QuestionBoard extends Component {
                 }, () => {
                     setTimeout(() => {
                         this.props.nextQuestion()
-                        this.setState({
-                            isQuestionAnswered: false,
-                            showResult: false
-                        })
-
+                        if (!this._unmounted) {
+                            this.setState({
+                                isQuestionAnswered: false,
+                                showResult: false
+                            })
+                        }
                     }, 3000)
 
                     clearInterval(timeInterval)

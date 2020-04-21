@@ -23,15 +23,28 @@ export default class Game extends Component {
     componentDidMount() {
         this.ws.onmessage = evt => {
             const message = JSON.parse(evt.data)
+            let { questions, started } = this.state
 
-            this.setState({
-                createdBy: message.created_by,
-                gameName: message.game_name,
-                questions: message.questions,
-                players: message.players,
-                started: message.started,
-            })
+            if (!questions) {
+                this.setState({
+                    createdBy: message.created_by,
+                    gameName: message.game_name,
+                    questions: message.questions,
+                    players: message.players,
+                    started: message.started,
+                })
+            }
+
+            if (message.started !== started) {
+                this.setState({
+                    started: message.started
+                })
+            }
         }
+    }
+
+    componentWillUnmount() {
+        this.ws.close()
     }
 
     render() {
@@ -40,6 +53,7 @@ export default class Game extends Component {
         if (started) {
             return (
                 <QuestionBoard
+                    ws={this.ws}
                     gameId={this.props.match.params.id}
                     nextQuestion={this.nextQuestion}
                     question={questions[currentQuestion]}
@@ -65,6 +79,7 @@ export default class Game extends Component {
     }
 
     nextQuestion = () => {
+        if (!this.state.currentQuestion + 1) this.ws.close()
         this.setState({
             currentQuestion: this.state.currentQuestion + 1
         })

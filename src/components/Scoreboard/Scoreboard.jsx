@@ -17,7 +17,7 @@ export default class Scoreboard extends Component {
             request("GET", `games/${this.props.match.params.id}/scoreboard`, null, gameResult => {
                 this.setState({ gameResult })
             })
-        }, 2000);
+        }, 2000)
     }
 
     render() {
