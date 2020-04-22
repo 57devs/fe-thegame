@@ -30,7 +30,7 @@ const QuestionText = styled.p`
     cursor: default;
 
     @media (min-width: 320px) and (max-width: 480px) {
-        font-size: 12px;
+        font-size: 14px;
     }
 `
 
@@ -90,7 +90,7 @@ const Answer = styled.div`
         padding: 5px;
         flex: 1;
         border-radius: 2.5px;
-        font-size: 12px;
+        font-size: 14px;
         align-self: stretch;
 
         &:last-of-type {
