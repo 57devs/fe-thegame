@@ -15,6 +15,22 @@ export default class Scoreboard extends Component {
     componentDidMount() {
         setTimeout(() => {
             request("GET", `games/${this.props.match.params.id}/scoreboard`, null, gameResult => {
+                let scores = gameResult.player_scores
+                let formattedScores = []
+                for (let i = 0; i < scores.length; i++) {
+                    let scoreItem = scores[i]
+                    let username = Object.keys(scoreItem)[0]
+                    let score = scoreItem[username]
+
+                    formattedScores.push({
+                        username: username,
+                        score: score
+                    })
+                }
+
+                formattedScores = formattedScores.sort((a, b) => a.score > b.score ? -1 : 1)
+                gameResult.player_scores = formattedScores
+
                 this.setState({ gameResult })
             })
         }, 2000)
@@ -33,10 +49,7 @@ export default class Scoreboard extends Component {
                     {
                         player_scores ?
                             player_scores.map((score, i) => {
-                                let username = Object.keys(score)[0]
-                                let point = score[username].toFixed(1)
-
-                                return <ListItem key={i}>{i + 1}. {username} {point} puan</ListItem>
+                                return <ListItem key={i}>{i + 1}. {score.username} {Math.round(score.score)} puan</ListItem>
                             }) :
                             <React.Fragment />
                     }
