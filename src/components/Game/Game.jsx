@@ -23,23 +23,13 @@ export default class Game extends Component {
     componentDidMount() {
         this.ws.onmessage = evt => {
             const message = JSON.parse(evt.data)
-            let { questions, started } = this.state
-
-            if (!questions) {
-                this.setState({
-                    createdBy: message.created_by,
-                    gameName: message.game_name,
-                    questions: message.questions,
-                    players: message.players,
-                    started: message.started,
-                })
-            }
-
-            if (message.started !== started) {
-                this.setState({
-                    started: message.started
-                })
-            }
+            this.setState({
+                createdBy: message.created_by,
+                gameName: message.game_name,
+                questions: message.questions,
+                players: message.players,
+                started: message.started,
+            })
         }
     }
 
